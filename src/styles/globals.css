@@ -1,0 +1,1586 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-app-bg: #E5EBEE;
+  --color-brand-primary: #18217E;
+  --color-brand-primary-hover: #121860;
+  --color-brand-navy: #09104D;
+  --color-brand-secondary: #424989;
+  --color-text-primary: #070724;
+  --color-text-secondary: #393A50;
+  --color-border-default: #D0D9DE;
+  
+  --color-status-active: #18217E;
+  --color-status-delayed: #EA341F;
+  --color-status-critical: #8C2527;
+  --color-status-maintenance: #8A9995;
+  --color-status-delivered: #107C41;
+}
+
+body {
+  background-color: var(--color-app-bg);
+  color: var(--color-text-primary);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbars for high-density enterprise tables and sidebars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #E5EBEE;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #B0BCC5;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #424989;
+}
+
+/* Leaflet map custom pulse and marker animations */
+@keyframes markerPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(24, 33, 126, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px rgba(24, 33, 126, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(24, 33, 126, 0);
+  }
+}
+
+@keyframes criticalPulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(234, 52, 31, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 12px rgba(234, 52, 31, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(234, 52, 31, 0);
+  }
+}
+
+.vehicle-marker-pulse {
+  animation: markerPulse 2s infinite;
+}
+
+.vehicle-marker-critical {
+  animation: criticalPulse 1.5s infinite;
+}
+
+/* ============================================================
+   APPLE LIQUID GLASS TEMPLATE ENGINE (LIGHT MODE)
+   ============================================================ */
+
+/* Apple Sonoma / Daylight Aurora Glass Ambiance */
+[data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 10%, rgba(125, 211, 252, 0.45) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(244, 114, 182, 0.35) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 85%, rgba(167, 139, 250, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 80%, rgba(56, 189, 248, 0.30) 0%, transparent 45%),
+    linear-gradient(135deg, #EFF4F9 0%, #DFE7F0 100%) !important;
+  background-attachment: fixed !important;
+}
+
+[data-template="glassmorphism"] .bg-\[\#E5EBEE\],
+[data-template="glassmorphism"] main {
+  background: transparent !important;
+}
+
+/* Apple Liquid Glass Cards & Surfaces with Specular Bevel Highlights */
+[data-template="glassmorphism"] .bg-white,
+[data-template="glassmorphism"] .shadow-card {
+  background-color: rgba(255, 255, 255, 0.65) !important;
+  backdrop-filter: blur(28px) saturate(200%) contrast(102%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(200%) contrast(102%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+  box-shadow: 
+    0 10px 32px 0 rgba(31, 38, 135, 0.06),
+    0 2px 6px 0 rgba(0, 0, 0, 0.02),
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.95),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.02) !important;
+  border-radius: 20px !important;
+}
+
+/* Apple macOS Translucent Frosted Sidebar (Light Mode) */
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside {
+  background-color: rgba(246, 248, 252, 0.76) !important;
+  backdrop-filter: blur(32px) saturate(210%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(210%) !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.08) !important;
+  color: #0F172A !important;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.03) !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside .bg-\[\#070724\] {
+  background-color: rgba(255, 255, 255, 0.60) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Sidebar Headings & Inactive Links */
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside p.text-white,
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside span.text-white:not(.bg-\[\#EA341F\]):not(.bg-\[\#18217E\]):not(.bg-\[\#0284C7\]):not(.bg-\[\#107C41\]):not(.bg-\[\#8C2527\]) {
+  color: #0F172A !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside .text-\[\#8A9995\] {
+  color: #475569 !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside .text-\[\#E5EBEE\]\/80 {
+  color: #1E293B !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside .bg-\[\#18217E\]\/20 {
+  background-color: rgba(0, 113, 227, 0.08) !important;
+  border-bottom: 1px solid rgba(0, 113, 227, 0.12) !important;
+}
+
+/* Active Nav Link in Light Frosted Sidebar */
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] {
+  background-color: rgba(0, 113, 227, 0.14) !important;
+  color: #0071E3 !important;
+  font-weight: 700 !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 113, 227, 0.25) !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] svg {
+  color: #0071E3 !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] span {
+  color: #0071E3 !important;
+  font-weight: 700 !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) aside a:hover:not(.bg-\[\#18217E\]) {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+  color: #0F172A !important;
+}
+
+/* Apple macOS Translucent Title Bar / Header (Light Mode) */
+[data-template="glassmorphism"]:not([data-theme="dark"]) header {
+  background-color: rgba(255, 255, 255, 0.72) !important;
+  backdrop-filter: blur(28px) saturate(210%) brightness(102%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(210%) brightness(102%) !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Apple Secondary Wells & Inner Glass Elements */
+[data-template="glassmorphism"] .bg-\[\#F4F7F9\] {
+  background-color: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.55) !important;
+  box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, 0.03) !important;
+  border-radius: 14px !important;
+}
+
+/* Apple Glass Controls & Modals (Scoped only to white dialogs, preserving colored banners) */
+[data-template="glassmorphism"] .bg-white.shadow-modal,
+[data-template="glassmorphism"] .bg-white\/95.shadow-modal,
+[data-template="glassmorphism"] .bg-white\/90.shadow-modal {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(36px) saturate(210%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(210%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.15), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+  border-radius: 20px !important;
+}
+
+[data-template="glassmorphism"] .bg-white\/95,
+[data-template="glassmorphism"] .bg-white\/90 {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(32px) saturate(210%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(210%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.85) !important;
+  box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.08), inset 0 1px 1px 0 rgba(255, 255, 255, 0.95) !important;
+  border-radius: 16px !important;
+}
+
+/* Light Glassmorphism High-Contrast Typography */
+[data-template="glassmorphism"]:not([data-theme="dark"]) .text-\[\#09104D\] {
+  color: #0F172A !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) .text-\[\#070724\] {
+  color: #020617 !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) .text-\[\#393A50\] {
+  color: #334155 !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) .text-\[\#8A9995\] {
+  color: #475569 !important;
+}
+
+[data-template="glassmorphism"]:not([data-theme="dark"]) .text-\[\#18217E\] {
+  color: #0071E3 !important;
+}
+
+/* Keep white text white on all semantic badges, pills, and avatar bubbles */
+.bg-\[\#18217E\].text-white,
+.bg-\[\#EA341F\].text-white,
+.bg-\[\#8C2527\].text-white,
+.bg-\[\#0284C7\].text-white,
+.bg-\[\#107C41\].text-white,
+.bg-\[\#D97706\].text-white,
+.bg-\[\#0071E3\].text-white,
+.bg-\[\#18217E\] .text-white,
+.bg-\[\#EA341F\] .text-white,
+.bg-\[\#8C2527\] .text-white,
+.bg-\[\#0284C7\] .text-white,
+.bg-\[\#107C41\] .text-white,
+.bg-\[\#D97706\] .text-white,
+.bg-\[\#0071E3\] .text-white,
+span.bg-\[\#8C2527\],
+span.bg-\[\#EA341F\],
+span.bg-\[\#107C41\],
+span.bg-\[\#0284C7\],
+span.bg-\[\#D97706\] {
+  color: #FFFFFF !important;
+}
+
+/* Critical Alert Banner Pill Badges and Action Buttons (Always high contrast across all themes) */
+.bg-\[\#8C2527\] .bg-white,
+[data-theme="dark"] .bg-\[\#8C2527\] .bg-white,
+[data-template="glassmorphism"] .bg-\[\#8C2527\] .bg-white {
+  background-color: #FFFFFF !important;
+  color: #8C2527 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+}
+
+.bg-\[\#8C2527\] .bg-white *,
+.bg-\[\#8C2527\] .text-\[\#8C2527\],
+.bg-\[\#8C2527\] \!text-\[\#8C2527\],
+[data-theme="dark"] .bg-\[\#8C2527\] .bg-white *,
+[data-theme="dark"] .bg-\[\#8C2527\] .text-\[\#8C2527\],
+[data-theme="dark"] .bg-\[\#8C2527\] \!text-\[\#8C2527\],
+[data-template="glassmorphism"] .bg-\[\#8C2527\] .bg-white *,
+[data-template="glassmorphism"] .bg-\[\#8C2527\] .text-\[\#8C2527\],
+[data-template="glassmorphism"] .bg-\[\#8C2527\] \!text-\[\#8C2527\] {
+  color: #8C2527 !important;
+}
+
+.bg-\[\#8C2527\] button.bg-white:hover,
+[data-theme="dark"] .bg-\[\#8C2527\] button.bg-white:hover,
+[data-template="glassmorphism"] .bg-\[\#8C2527\] button.bg-white:hover {
+  background-color: #F8FAFC !important;
+  color: #6B1C1E !important;
+}
+
+/* ============================================================
+   DARK THEME: SLEEK OBSIDIAN CHARCOAL (NEUTRAL, ZERO BLUE-SATURATION)
+   ============================================================ */
+
+/* Base Dark Body & App Layout Background */
+[data-theme="dark"] body,
+[data-theme="dark"] .bg-\[\#E5EBEE\] {
+  background-color: #0D0F12 !important;
+  color: #F8FAFC !important;
+}
+
+/* Primary Elevated Cards, Panels & Modals */
+[data-theme="dark"] .bg-white,
+[data-theme="dark"] .shadow-card {
+  background-color: #16181D !important;
+  color: #F8FAFC !important;
+  border-color: #272B35 !important;
+}
+
+/* Secondary Nested Surfaces, Wells, Input Backgrounds & Table Headers */
+[data-theme="dark"] .bg-\[\#F4F7F9\] {
+  background-color: #1E2128 !important;
+  color: #F8FAFC !important;
+  border-color: #272B35 !important;
+}
+
+/* Top Header Bar */
+[data-theme="dark"] header {
+  background-color: #121418 !important;
+  border-bottom-color: #232731 !important;
+  color: #FFFFFF !important;
+}
+
+/* Fixed Sidebar in Dark Theme */
+[data-theme="dark"] aside,
+[data-theme="dark"] aside.bg-\[\#09104D\] {
+  background-color: #0F1116 !important;
+  border-right-color: #222630 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] aside .bg-\[\#070724\],
+[data-theme="dark"] aside .bg-\[\#070724\]\/80 {
+  background-color: #0B0C10 !important;
+  border-bottom-color: #1D2028 !important;
+}
+
+[data-theme="dark"] aside .bg-\[\#18217E\]\/20,
+[data-theme="dark"] aside .bg-\[\#18217E\]\/30,
+[data-theme="dark"] aside .bg-\[\#18217E\]\/40 {
+  background-color: #181B22 !important;
+  border-bottom-color: #222630 !important;
+}
+
+[data-theme="dark"] aside .bg-\[\#18217E\] {
+  background-color: #242935 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] aside .hover\:bg-\[\#18217E\]\/40:hover,
+[data-theme="dark"] aside .hover\:bg-\[\#18217E\]\/30:hover,
+[data-theme="dark"] aside .hover\:bg-\[\#18217E\]\/20:hover {
+  background-color: #1E222D !important;
+}
+
+/* Global Dark Mode Neutralization of Navy / Blue Surfaces */
+[data-theme="dark"] .bg-\[\#09104D\],
+[data-theme="dark"] button.bg-\[\#09104D\],
+[data-theme="dark"] thead.bg-\[\#09104D\] {
+  background-color: #1C2029 !important;
+  border-color: #2B303E !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .hover\:bg-\[\#09104D\]:hover {
+  background-color: #252B37 !important;
+}
+
+[data-theme="dark"] .bg-\[\#18217E\],
+[data-theme="dark"] button.bg-\[\#18217E\],
+[data-theme="dark"] a.bg-\[\#18217E\] {
+  background-color: #262B38 !important;
+  border-color: #383F52 !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .hover\:bg-\[\#18217E\]:hover,
+[data-theme="dark"] .hover\:bg-\[\#121860\]:hover {
+  background-color: #32384A !important;
+}
+
+[data-theme="dark"] .bg-\[\#18217E\]\/10,
+[data-theme="dark"] .bg-\[\#18217E\]\/20 {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+[data-theme="dark"] .bg-\[\#424989\],
+[data-theme="dark"] .bg-\[\#424989\]\/10,
+[data-theme="dark"] .bg-\[\#424989\]\/20 {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  color: #CBD5E1 !important;
+}
+
+/* High-Contrast Typography Overrides (Dark Mode - Zero Blue Saturation) */
+[data-theme="dark"] .text-\[\#070724\] {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .text-\[\#09104D\] {
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"] .text-\[\#393A50\] {
+  color: #CBD5E1 !important;
+}
+
+[data-theme="dark"] .text-\[\#8A9995\] {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .text-\[\#18217E\] {
+  color: #E2E8F0 !important;
+}
+
+[data-theme="dark"] .text-\[\#424989\] {
+  color: #94A3B8 !important;
+}
+
+[data-theme="dark"] .hover\:text-\[\#18217E\]:hover,
+[data-theme="dark"] .hover\:text-\[\#09104D\]:hover {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .text-\[\#E5EBEE\]\/80 {
+  color: #E2E8F0 !important;
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: #64748B !important;
+}
+
+/* Neutral Dark Borders */
+[data-theme="dark"] .border-\[\#D0D9DE\] {
+  border-color: #272B35 !important;
+}
+
+[data-theme="dark"] .border-\[\#18217E\],
+[data-theme="dark"] .border-\[\#18217E\]\/30,
+[data-theme="dark"] .border-\[\#18217E\]\/40,
+[data-theme="dark"] .border-\[\#18217E\]\/60 {
+  border-color: #2E3342 !important;
+}
+
+[data-theme="dark"] .border-\[\#424989\],
+[data-theme="dark"] .border-\[\#424989\]\/30,
+[data-theme="dark"] .border-\[\#424989\]\/40,
+[data-theme="dark"] .border-\[\#424989\]\/50 {
+  border-color: #272B35 !important;
+}
+
+[data-theme="dark"] .ring-\[\#18217E\],
+[data-theme="dark"] .focus\:ring-\[\#18217E\]:focus {
+  --tw-ring-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Dark Mode Form Inputs & Controls */
+[data-theme="dark"] input:not([type="checkbox"]):not([type="radio"]),
+[data-theme="dark"] select,
+[data-theme="dark"] textarea {
+  background-color: #191C23 !important;
+  border-color: #2D323F !important;
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"] input:focus,
+[data-theme="dark"] select:focus,
+[data-theme="dark"] textarea:focus {
+  border-color: #6366F1 !important;
+  background-color: #1E222D !important;
+}
+
+/* Tables in Dark Mode */
+[data-theme="dark"] table th {
+  background-color: #1A1D25 !important;
+  color: #94A3B8 !important;
+  border-color: #272B35 !important;
+}
+
+[data-theme="dark"] table td {
+  border-color: #222630 !important;
+}
+
+[data-theme="dark"] table tbody tr:hover {
+  background-color: #1E222D !important;
+}
+
+/* Shadows in Dark Mode */
+[data-theme="dark"] .shadow-card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-theme="dark"] .shadow-modal {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 8px 10px -6px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Custom Scrollbar for Dark Mode */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #101216;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #282C37;
+  border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #373C4B;
+}
+
+/* Semi-transparent surfaces & Map Toolbar */
+[data-theme="dark"] .bg-white\/95,
+[data-theme="dark"] .bg-white\/90,
+[data-theme="dark"] .bg-white\/80 {
+  background-color: rgba(22, 24, 29, 0.94) !important;
+  border-color: #272B35 !important;
+  color: #F8FAFC !important;
+}
+
+/* Status badges optimized for dark mode */
+[data-theme="dark"] .bg-emerald-50 {
+  background-color: rgba(6, 78, 59, 0.3) !important;
+  color: #6EE7B7 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+
+[data-theme="dark"] .bg-rose-50 {
+  background-color: rgba(136, 19, 55, 0.3) !important;
+  color: #FDA4AF !important;
+  border-color: rgba(244, 63, 94, 0.3) !important;
+}
+
+[data-theme="dark"] .bg-amber-50 {
+  background-color: rgba(120, 53, 15, 0.3) !important;
+  color: #FCD34D !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+/* Map Dark Theme Tile Styling */
+[data-theme="dark"] .leaflet-container {
+  background-color: #0D0F12 !important;
+}
+
+[data-theme="dark"] .leaflet-tile {
+  filter: invert(90%) hue-rotate(180deg) brightness(85%) contrast(95%) saturate(0.08) !important;
+}
+
+[data-theme="dark"] .leaflet-bar a {
+  background-color: #191C23 !important;
+  border-color: #272B35 !important;
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"] .leaflet-bar a:hover {
+  background-color: #222632 !important;
+}
+
+/* ============================================================
+   DARK MODE + APPLE GLASS TEMPLATE (APPLE VISIONOS / SPACE GLASS)
+   ============================================================ */
+[data-theme="dark"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 15%, rgba(56, 189, 248, 0.18) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(168, 85, 247, 0.20) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 90%, rgba(99, 102, 241, 0.16) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 85%, rgba(236, 72, 153, 0.14) 0%, transparent 45%),
+    linear-gradient(135deg, #090B0E 0%, #12151B 100%) !important;
+  background-attachment: fixed !important;
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"][data-template="glassmorphism"] .bg-white,
+[data-theme="dark"][data-template="glassmorphism"] .shadow-card {
+  background-color: rgba(24, 27, 34, 0.68) !important;
+  backdrop-filter: blur(28px) saturate(190%) contrast(105%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) contrast(105%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 
+    0 16px 40px 0 rgba(0, 0, 0, 0.45),
+    0 2px 8px 0 rgba(0, 0, 0, 0.25),
+    inset 0 1px 1.5px 0 rgba(255, 255, 255, 0.25),
+    inset 0 -1px 1px 0 rgba(0, 0, 0, 0.35) !important;
+  border-radius: 20px !important;
+  color: #F8FAFC !important;
+}
+
+[data-theme="dark"][data-template="glassmorphism"] header {
+  background-color: rgba(18, 20, 26, 0.72) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35) !important;
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"][data-template="glassmorphism"] aside {
+  background-color: rgba(18, 21, 28, 0.72) !important;
+  backdrop-filter: blur(32px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.09) !important;
+  box-shadow: 4px 0 32px rgba(0, 0, 0, 0.45) !important;
+}
+
+[data-theme="dark"][data-template="glassmorphism"] aside .bg-\[\#070724\] {
+  background-color: rgba(12, 14, 18, 0.60) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+[data-theme="dark"][data-template="glassmorphism"] aside a.bg-\[\#18217E\] {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-theme="dark"][data-template="glassmorphism"] aside a:hover:not(.bg-\[\#18217E\]) {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  color: #FFFFFF !important;
+}
+
+/* ============================================================
+   CURATED ACCENT COLOR PALETTES (5+ THEME EXPERIENCES)
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. ROYAL WINE / VELVET BORDEAUX ([data-palette="wine"])
+   ------------------------------------------------------------ */
+/* Sidebar styling in corporate mode */
+[data-palette="wine"]:not([data-template="glassmorphism"]) aside,
+[data-palette="wine"]:not([data-template="glassmorphism"]) aside.bg-\[\#09104D\] {
+  background: linear-gradient(180deg, #4C0519 0%, #881337 100%) !important;
+  border-right-color: #9F1239 !important;
+}
+
+[data-palette="wine"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\],
+[data-palette="wine"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\]\/80 {
+  background-color: #380413 !important;
+  border-bottom-color: #881337 !important;
+}
+
+[data-palette="wine"][data-theme="dark"]:not([data-template="glassmorphism"]) aside,
+[data-palette="wine"][data-theme="dark"]:not([data-template="glassmorphism"]) aside.bg-\[\#09104D\] {
+  background: #18080E !important;
+  border-right-color: #3D101E !important;
+}
+
+[data-palette="wine"][data-theme="dark"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\],
+[data-palette="wine"][data-theme="dark"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\]\/80 {
+  background-color: #100408 !important;
+  border-bottom-color: #2D0B16 !important;
+}
+
+/* Glassmorphism Sidebar */
+[data-palette="wine"][data-template="glassmorphism"]:not([data-theme="dark"]) aside {
+  background-color: rgba(255, 241, 242, 0.75) !important;
+  border-right: 1px solid rgba(244, 63, 94, 0.25) !important;
+}
+
+[data-palette="wine"][data-theme="dark"][data-template="glassmorphism"] aside {
+  background-color: rgba(24, 8, 14, 0.78) !important;
+  border-right: 1px solid rgba(244, 63, 94, 0.16) !important;
+}
+
+/* Primary Surfaces & Buttons */
+[data-palette="wine"] .bg-\[\#09104D\],
+[data-palette="wine"] button.bg-\[\#09104D\],
+[data-palette="wine"] thead.bg-\[\#09104D\] {
+  background-color: #881337 !important;
+  border-color: #9F1239 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="wine"] .hover\:bg-\[\#09104D\]:hover {
+  background-color: #9F1239 !important;
+}
+
+[data-palette="wine"][data-theme="dark"] .bg-\[\#09104D\],
+[data-palette="wine"][data-theme="dark"] button.bg-\[\#09104D\],
+[data-palette="wine"][data-theme="dark"] thead.bg-\[\#09104D\] {
+  background-color: #2D0B16 !important;
+  border-color: #4C0519 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="wine"] .bg-\[\#18217E\],
+[data-palette="wine"] button.bg-\[\#18217E\],
+[data-palette="wine"] a.bg-\[\#18217E\],
+[data-palette="wine"] aside a.bg-\[\#18217E\],
+[data-palette="wine"] aside .bg-\[\#18217E\] {
+  background-color: #BE123C !important;
+  border-color: #E11D48 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="wine"] .hover\:bg-\[\#18217E\]:hover,
+[data-palette="wine"] .hover\:bg-\[\#121860\]:hover,
+[data-palette="wine"] aside .hover\:bg-\[\#18217E\]\/40:hover,
+[data-palette="wine"] aside .hover\:bg-\[\#18217E\]\/20:hover,
+[data-palette="wine"] aside a:hover:not(.bg-\[\#18217E\]) {
+  background-color: #9F1239 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="wine"][data-theme="dark"] .bg-\[\#18217E\],
+[data-palette="wine"][data-theme="dark"] button.bg-\[\#18217E\],
+[data-palette="wine"][data-theme="dark"] a.bg-\[\#18217E\],
+[data-palette="wine"][data-theme="dark"] aside .bg-\[\#18217E\] {
+  background-color: #9F1239 !important;
+  border-color: #BE123C !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="wine"] .bg-\[\#18217E\]\/10,
+[data-palette="wine"] .bg-\[\#18217E\]\/20,
+[data-palette="wine"] .bg-\[\#18217E\]\/30,
+[data-palette="wine"] .bg-\[\#18217E\]\/40,
+[data-palette="wine"] aside .bg-\[\#18217E\]\/20,
+[data-palette="wine"] aside .bg-\[\#18217E\]\/30,
+[data-palette="wine"] aside .bg-\[\#18217E\]\/40,
+[data-palette="wine"] .bg-\[\#424989\],
+[data-palette="wine"] .bg-\[\#424989\]\/10,
+[data-palette="wine"] .bg-\[\#424989\]\/20 {
+  background-color: rgba(190, 18, 60, 0.12) !important;
+  color: #BE123C !important;
+}
+
+[data-palette="wine"][data-theme="dark"] .bg-\[\#18217E\]\/10,
+[data-palette="wine"][data-theme="dark"] .bg-\[\#18217E\]\/20,
+[data-palette="wine"][data-theme="dark"] .bg-\[\#424989\]\/10 {
+  background-color: rgba(251, 113, 133, 0.12) !important;
+  color: #FB7185 !important;
+}
+
+/* Typography Overrides */
+[data-palette="wine"] .text-\[\#18217E\] {
+  color: #BE123C !important;
+}
+
+[data-palette="wine"] .text-\[\#424989\] {
+  color: #9F1239 !important;
+}
+
+[data-palette="wine"]:not([data-theme="dark"]) h1.text-\[\#09104D\],
+[data-palette="wine"]:not([data-theme="dark"]) h2.text-\[\#09104D\],
+[data-palette="wine"]:not([data-theme="dark"]) h3.text-\[\#09104D\],
+[data-palette="wine"]:not([data-theme="dark"]) span.text-\[\#09104D\]:not(.text-white) {
+  color: #881337 !important;
+}
+
+[data-palette="wine"][data-theme="dark"] .text-\[\#18217E\] {
+  color: #FB7185 !important;
+}
+
+[data-palette="wine"][data-theme="dark"] .text-\[\#424989\] {
+  color: #FDA4AF !important;
+}
+
+[data-palette="wine"] .hover\:text-\[\#18217E\]:hover,
+[data-palette="wine"] .hover\:text-\[\#09104D\]:hover {
+  color: #E11D48 !important;
+}
+
+/* Borders & Rings */
+[data-palette="wine"] .border-\[\#18217E\],
+[data-palette="wine"] .border-\[\#18217E\]\/30,
+[data-palette="wine"] .border-\[\#18217E\]\/40,
+[data-palette="wine"] .border-\[\#18217E\]\/60,
+[data-palette="wine"] .border-\[\#424989\],
+[data-palette="wine"] .border-\[\#424989\]\/30,
+[data-palette="wine"] .border-\[\#424989\]\/40,
+[data-palette="wine"] .border-\[\#424989\]\/50 {
+  border-color: #E11D48 !important;
+}
+
+[data-palette="wine"][data-theme="dark"] .border-\[\#18217E\],
+[data-palette="wine"][data-theme="dark"] .border-\[\#424989\] {
+  border-color: #881337 !important;
+}
+
+[data-palette="wine"] .ring-\[\#18217E\],
+[data-palette="wine"] .focus\:ring-\[\#18217E\]:focus,
+[data-palette="wine"] .focus\:border-\[\#18217E\]:focus {
+  --tw-ring-color: rgba(225, 29, 72, 0.4) !important;
+  border-color: #BE123C !important;
+}
+
+/* Apple Liquid Glass Auroras for Wine */
+[data-palette="wine"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 10%, rgba(244, 63, 94, 0.42) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(190, 18, 60, 0.35) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 85%, rgba(136, 19, 55, 0.30) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 80%, rgba(251, 113, 133, 0.25) 0%, transparent 45%),
+    linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%) !important;
+  background-attachment: fixed !important;
+}
+
+[data-palette="wine"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] {
+  background-color: rgba(190, 18, 60, 0.16) !important;
+  color: #BE123C !important;
+  box-shadow: inset 0 0 0 1px rgba(190, 18, 60, 0.35) !important;
+}
+
+[data-palette="wine"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] span,
+[data-palette="wine"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] svg {
+  color: #BE123C !important;
+}
+
+[data-palette="wine"][data-theme="dark"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 15%, rgba(225, 29, 72, 0.24) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(159, 18, 57, 0.26) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 90%, rgba(76, 5, 25, 0.35) 0%, transparent 55%),
+    linear-gradient(135deg, #100609 0%, #1A0A10 100%) !important;
+  background-attachment: fixed !important;
+}
+
+/* ------------------------------------------------------------
+   2. FROST GREEN / NORDIC EMERALD ([data-palette="frost-green"])
+   ------------------------------------------------------------ */
+/* Sidebar styling in corporate mode */
+[data-palette="frost-green"]:not([data-template="glassmorphism"]) aside,
+[data-palette="frost-green"]:not([data-template="glassmorphism"]) aside.bg-\[\#09104D\] {
+  background: linear-gradient(180deg, #022C22 0%, #064E3B 100%) !important;
+  border-right-color: #047857 !important;
+}
+
+[data-palette="frost-green"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\],
+[data-palette="frost-green"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\]\/80 {
+  background-color: #022019 !important;
+  border-bottom-color: #064E3B !important;
+}
+
+[data-palette="frost-green"][data-theme="dark"]:not([data-template="glassmorphism"]) aside,
+[data-palette="frost-green"][data-theme="dark"]:not([data-template="glassmorphism"]) aside.bg-\[\#09104D\] {
+  background: #061510 !important;
+  border-right-color: #0E3326 !important;
+}
+
+[data-palette="frost-green"][data-theme="dark"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\],
+[data-palette="frost-green"][data-theme="dark"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\]\/80 {
+  background-color: #030D0A !important;
+  border-bottom-color: #0E2A1F !important;
+}
+
+/* Glassmorphism Sidebar */
+[data-palette="frost-green"][data-template="glassmorphism"]:not([data-theme="dark"]) aside {
+  background-color: rgba(236, 253, 245, 0.75) !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.25) !important;
+}
+
+[data-palette="frost-green"][data-theme="dark"][data-template="glassmorphism"] aside {
+  background-color: rgba(6, 21, 16, 0.78) !important;
+  border-right: 1px solid rgba(16, 185, 129, 0.16) !important;
+}
+
+/* Primary Surfaces & Buttons */
+[data-palette="frost-green"] .bg-\[\#09104D\],
+[data-palette="frost-green"] button.bg-\[\#09104D\],
+[data-palette="frost-green"] thead.bg-\[\#09104D\] {
+  background-color: #064E3B !important;
+  border-color: #047857 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="frost-green"] .hover\:bg-\[\#09104D\]:hover {
+  background-color: #047857 !important;
+}
+
+[data-palette="frost-green"][data-theme="dark"] .bg-\[\#09104D\],
+[data-palette="frost-green"][data-theme="dark"] button.bg-\[\#09104D\],
+[data-palette="frost-green"][data-theme="dark"] thead.bg-\[\#09104D\] {
+  background-color: #0B291F !important;
+  border-color: #134E3A !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="frost-green"] .bg-\[\#18217E\],
+[data-palette="frost-green"] button.bg-\[\#18217E\],
+[data-palette="frost-green"] a.bg-\[\#18217E\],
+[data-palette="frost-green"] aside a.bg-\[\#18217E\],
+[data-palette="frost-green"] aside .bg-\[\#18217E\] {
+  background-color: #059669 !important;
+  border-color: #10B981 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="frost-green"] .hover\:bg-\[\#18217E\]:hover,
+[data-palette="frost-green"] .hover\:bg-\[\#121860\]:hover,
+[data-palette="frost-green"] aside .hover\:bg-\[\#18217E\]\/40:hover,
+[data-palette="frost-green"] aside .hover\:bg-\[\#18217E\]\/20:hover,
+[data-palette="frost-green"] aside a:hover:not(.bg-\[\#18217E\]) {
+  background-color: #047857 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="frost-green"][data-theme="dark"] .bg-\[\#18217E\],
+[data-palette="frost-green"][data-theme="dark"] button.bg-\[\#18217E\],
+[data-palette="frost-green"][data-theme="dark"] a.bg-\[\#18217E\],
+[data-palette="frost-green"][data-theme="dark"] aside .bg-\[\#18217E\] {
+  background-color: #047857 !important;
+  border-color: #059669 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="frost-green"] .bg-\[\#18217E\]\/10,
+[data-palette="frost-green"] .bg-\[\#18217E\]\/20,
+[data-palette="frost-green"] .bg-\[\#18217E\]\/30,
+[data-palette="frost-green"] .bg-\[\#18217E\]\/40,
+[data-palette="frost-green"] aside .bg-\[\#18217E\]\/20,
+[data-palette="frost-green"] aside .bg-\[\#18217E\]\/30,
+[data-palette="frost-green"] aside .bg-\[\#18217E\]\/40,
+[data-palette="frost-green"] .bg-\[\#424989\],
+[data-palette="frost-green"] .bg-\[\#424989\]\/10,
+[data-palette="frost-green"] .bg-\[\#424989\]\/20 {
+  background-color: rgba(5, 150, 105, 0.12) !important;
+  color: #047857 !important;
+}
+
+[data-palette="frost-green"][data-theme="dark"] .bg-\[\#18217E\]\/10,
+[data-palette="frost-green"][data-theme="dark"] .bg-\[\#18217E\]\/20,
+[data-palette="frost-green"][data-theme="dark"] .bg-\[\#424989\]\/10 {
+  background-color: rgba(52, 211, 153, 0.12) !important;
+  color: #34D399 !important;
+}
+
+/* Typography Overrides */
+[data-palette="frost-green"] .text-\[\#18217E\] {
+  color: #059669 !important;
+}
+
+[data-palette="frost-green"] .text-\[\#424989\] {
+  color: #047857 !important;
+}
+
+[data-palette="frost-green"]:not([data-theme="dark"]) h1.text-\[\#09104D\],
+[data-palette="frost-green"]:not([data-theme="dark"]) h2.text-\[\#09104D\],
+[data-palette="frost-green"]:not([data-theme="dark"]) h3.text-\[\#09104D\],
+[data-palette="frost-green"]:not([data-theme="dark"]) span.text-\[\#09104D\]:not(.text-white) {
+  color: #064E3B !important;
+}
+
+[data-palette="frost-green"][data-theme="dark"] .text-\[\#18217E\] {
+  color: #34D399 !important;
+}
+
+[data-palette="frost-green"][data-theme="dark"] .text-\[\#424989\] {
+  color: #6EE7B7 !important;
+}
+
+[data-palette="frost-green"] .hover\:text-\[\#18217E\]:hover,
+[data-palette="frost-green"] .hover\:text-\[\#09104D\]:hover {
+  color: #10B981 !important;
+}
+
+/* Borders & Rings */
+[data-palette="frost-green"] .border-\[\#18217E\],
+[data-palette="frost-green"] .border-\[\#18217E\]\/30,
+[data-palette="frost-green"] .border-\[\#18217E\]\/40,
+[data-palette="frost-green"] .border-\[\#18217E\]\/60,
+[data-palette="frost-green"] .border-\[\#424989\],
+[data-palette="frost-green"] .border-\[\#424989\]\/30,
+[data-palette="frost-green"] .border-\[\#424989\]\/40,
+[data-palette="frost-green"] .border-\[\#424989\]\/50 {
+  border-color: #10B981 !important;
+}
+
+[data-palette="frost-green"][data-theme="dark"] .border-\[\#18217E\],
+[data-palette="frost-green"][data-theme="dark"] .border-\[\#424989\] {
+  border-color: #064E3B !important;
+}
+
+[data-palette="frost-green"] .ring-\[\#18217E\],
+[data-palette="frost-green"] .focus\:ring-\[\#18217E\]:focus,
+[data-palette="frost-green"] .focus\:border-\[\#18217E\]:focus {
+  --tw-ring-color: rgba(16, 185, 129, 0.4) !important;
+  border-color: #059669 !important;
+}
+
+/* Apple Liquid Glass Auroras for Frost Green */
+[data-palette="frost-green"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 10%, rgba(52, 211, 153, 0.42) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(16, 185, 129, 0.34) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 85%, rgba(5, 150, 105, 0.28) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 85% 80%, rgba(110, 231, 183, 0.28) 0%, transparent 45%),
+    linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%) !important;
+  background-attachment: fixed !important;
+}
+
+[data-palette="frost-green"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] {
+  background-color: rgba(5, 150, 105, 0.16) !important;
+  color: #059669 !important;
+  box-shadow: inset 0 0 0 1px rgba(5, 150, 105, 0.35) !important;
+}
+
+[data-palette="frost-green"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] span,
+[data-palette="frost-green"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] svg {
+  color: #059669 !important;
+}
+
+[data-palette="frost-green"][data-theme="dark"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 15%, rgba(16, 185, 129, 0.22) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(5, 150, 105, 0.26) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 90%, rgba(6, 78, 59, 0.35) 0%, transparent 55%),
+    linear-gradient(135deg, #050D0A 0%, #0A1712 100%) !important;
+  background-attachment: fixed !important;
+}
+
+/* ------------------------------------------------------------
+   3. NORDIC SLATE / ARCTIC CYAN ([data-palette="nordic-slate"])
+   ------------------------------------------------------------ */
+/* Sidebar styling in corporate mode */
+[data-palette="nordic-slate"]:not([data-template="glassmorphism"]) aside,
+[data-palette="nordic-slate"]:not([data-template="glassmorphism"]) aside.bg-\[\#09104D\] {
+  background: linear-gradient(180deg, #082F49 0%, #0369A1 100%) !important;
+  border-right-color: #0284C7 !important;
+}
+
+[data-palette="nordic-slate"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\],
+[data-palette="nordic-slate"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\]\/80 {
+  background-color: #062235 !important;
+  border-bottom-color: #0369A1 !important;
+}
+
+[data-palette="nordic-slate"][data-theme="dark"]:not([data-template="glassmorphism"]) aside,
+[data-palette="nordic-slate"][data-theme="dark"]:not([data-template="glassmorphism"]) aside.bg-\[\#09104D\] {
+  background: #081420 !important;
+  border-right-color: #12293E !important;
+}
+
+[data-palette="nordic-slate"][data-theme="dark"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\],
+[data-palette="nordic-slate"][data-theme="dark"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\]\/80 {
+  background-color: #050D15 !important;
+  border-bottom-color: #0C1E2E !important;
+}
+
+/* Glassmorphism Sidebar */
+[data-palette="nordic-slate"][data-template="glassmorphism"]:not([data-theme="dark"]) aside {
+  background-color: rgba(240, 249, 255, 0.75) !important;
+  border-right: 1px solid rgba(14, 165, 233, 0.25) !important;
+}
+
+[data-palette="nordic-slate"][data-theme="dark"][data-template="glassmorphism"] aside {
+  background-color: rgba(8, 20, 32, 0.78) !important;
+  border-right: 1px solid rgba(14, 165, 233, 0.16) !important;
+}
+
+/* Primary Surfaces & Buttons */
+[data-palette="nordic-slate"] .bg-\[\#09104D\],
+[data-palette="nordic-slate"] button.bg-\[\#09104D\],
+[data-palette="nordic-slate"] thead.bg-\[\#09104D\] {
+  background-color: #0369A1 !important;
+  border-color: #0284C7 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="nordic-slate"] .hover\:bg-\[\#09104D\]:hover {
+  background-color: #0284C7 !important;
+}
+
+[data-palette="nordic-slate"][data-theme="dark"] .bg-\[\#09104D\],
+[data-palette="nordic-slate"][data-theme="dark"] button.bg-\[\#09104D\],
+[data-palette="nordic-slate"][data-theme="dark"] thead.bg-\[\#09104D\] {
+  background-color: #0C2D44 !important;
+  border-color: #0369A1 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="nordic-slate"] .bg-\[\#18217E\],
+[data-palette="nordic-slate"] button.bg-\[\#18217E\],
+[data-palette="nordic-slate"] a.bg-\[\#18217E\],
+[data-palette="nordic-slate"] aside a.bg-\[\#18217E\],
+[data-palette="nordic-slate"] aside .bg-\[\#18217E\] {
+  background-color: #0284C7 !important;
+  border-color: #38BDF8 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="nordic-slate"] .hover\:bg-\[\#18217E\]:hover,
+[data-palette="nordic-slate"] .hover\:bg-\[\#121860\]:hover,
+[data-palette="nordic-slate"] aside .hover\:bg-\[\#18217E\]\/40:hover,
+[data-palette="nordic-slate"] aside .hover\:bg-\[\#18217E\]\/20:hover,
+[data-palette="nordic-slate"] aside a:hover:not(.bg-\[\#18217E\]) {
+  background-color: #0369A1 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="nordic-slate"][data-theme="dark"] .bg-\[\#18217E\],
+[data-palette="nordic-slate"][data-theme="dark"] button.bg-\[\#18217E\],
+[data-palette="nordic-slate"][data-theme="dark"] a.bg-\[\#18217E\],
+[data-palette="nordic-slate"][data-theme="dark"] aside .bg-\[\#18217E\] {
+  background-color: #0369A1 !important;
+  border-color: #0284C7 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="nordic-slate"] .bg-\[\#18217E\]\/10,
+[data-palette="nordic-slate"] .bg-\[\#18217E\]\/20,
+[data-palette="nordic-slate"] .bg-\[\#18217E\]\/30,
+[data-palette="nordic-slate"] .bg-\[\#18217E\]\/40,
+[data-palette="nordic-slate"] aside .bg-\[\#18217E\]\/20,
+[data-palette="nordic-slate"] aside .bg-\[\#18217E\]\/30,
+[data-palette="nordic-slate"] aside .bg-\[\#18217E\]\/40,
+[data-palette="nordic-slate"] .bg-\[\#424989\],
+[data-palette="nordic-slate"] .bg-\[\#424989\]\/10,
+[data-palette="nordic-slate"] .bg-\[\#424989\]\/20 {
+  background-color: rgba(2, 132, 199, 0.12) !important;
+  color: #0284C7 !important;
+}
+
+[data-palette="nordic-slate"][data-theme="dark"] .bg-\[\#18217E\]\/10,
+[data-palette="nordic-slate"][data-theme="dark"] .bg-\[\#18217E\]\/20,
+[data-palette="nordic-slate"][data-theme="dark"] .bg-\[\#424989\]\/10 {
+  background-color: rgba(56, 189, 248, 0.12) !important;
+  color: #38BDF8 !important;
+}
+
+/* Typography Overrides */
+[data-palette="nordic-slate"] .text-\[\#18217E\] {
+  color: #0284C7 !important;
+}
+
+[data-palette="nordic-slate"] .text-\[\#424989\] {
+  color: #0369A1 !important;
+}
+
+[data-palette="nordic-slate"]:not([data-theme="dark"]) h1.text-\[\#09104D\],
+[data-palette="nordic-slate"]:not([data-theme="dark"]) h2.text-\[\#09104D\],
+[data-palette="nordic-slate"]:not([data-theme="dark"]) h3.text-\[\#09104D\],
+[data-palette="nordic-slate"]:not([data-theme="dark"]) span.text-\[\#09104D\]:not(.text-white) {
+  color: #0369A1 !important;
+}
+
+[data-palette="nordic-slate"][data-theme="dark"] .text-\[\#18217E\] {
+  color: #38BDF8 !important;
+}
+
+[data-palette="nordic-slate"][data-theme="dark"] .text-\[\#424989\] {
+  color: #7DD3FC !important;
+}
+
+[data-palette="nordic-slate"] .hover\:text-\[\#18217E\]:hover,
+[data-palette="nordic-slate"] .hover\:text-\[\#09104D\]:hover {
+  color: #0284C7 !important;
+}
+
+/* Borders & Rings */
+[data-palette="nordic-slate"] .border-\[\#18217E\],
+[data-palette="nordic-slate"] .border-\[\#18217E\]\/30,
+[data-palette="nordic-slate"] .border-\[\#18217E\]\/40,
+[data-palette="nordic-slate"] .border-\[\#18217E\]\/60,
+[data-palette="nordic-slate"] .border-\[\#424989\],
+[data-palette="nordic-slate"] .border-\[\#424989\]\/30,
+[data-palette="nordic-slate"] .border-\[\#424989\]\/40,
+[data-palette="nordic-slate"] .border-\[\#424989\]\/50 {
+  border-color: #38BDF8 !important;
+}
+
+[data-palette="nordic-slate"][data-theme="dark"] .border-\[\#18217E\],
+[data-palette="nordic-slate"][data-theme="dark"] .border-\[\#424989\] {
+  border-color: #0369A1 !important;
+}
+
+[data-palette="nordic-slate"] .ring-\[\#18217E\],
+[data-palette="nordic-slate"] .focus\:ring-\[\#18217E\]:focus,
+[data-palette="nordic-slate"] .focus\:border-\[\#18217E\]:focus {
+  --tw-ring-color: rgba(2, 132, 199, 0.4) !important;
+  border-color: #0284C7 !important;
+}
+
+/* Apple Liquid Glass Auroras for Nordic Slate */
+[data-palette="nordic-slate"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 10%, rgba(56, 189, 248, 0.44) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(14, 165, 233, 0.36) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 85%, rgba(96, 165, 250, 0.30) 0%, transparent 55%),
+    linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%) !important;
+  background-attachment: fixed !important;
+}
+
+[data-palette="nordic-slate"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] {
+  background-color: rgba(2, 132, 199, 0.16) !important;
+  color: #0284C7 !important;
+  box-shadow: inset 0 0 0 1px rgba(2, 132, 199, 0.35) !important;
+}
+
+[data-palette="nordic-slate"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] span,
+[data-palette="nordic-slate"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] svg {
+  color: #0284C7 !important;
+}
+
+[data-palette="nordic-slate"][data-theme="dark"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 15%, rgba(56, 189, 248, 0.22) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(3, 105, 161, 0.25) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 90%, rgba(12, 74, 110, 0.38) 0%, transparent 55%),
+    linear-gradient(135deg, #060B11 0%, #0C141E 100%) !important;
+  background-attachment: fixed !important;
+}
+
+/* ------------------------------------------------------------
+   4. AMBER SUNSET / ROYAL COPPER ([data-palette="amber-sunset"])
+   ------------------------------------------------------------ */
+/* Sidebar styling in corporate mode */
+[data-palette="amber-sunset"]:not([data-template="glassmorphism"]) aside,
+[data-palette="amber-sunset"]:not([data-template="glassmorphism"]) aside.bg-\[\#09104D\] {
+  background: linear-gradient(180deg, #451A03 0%, #78350F 100%) !important;
+  border-right-color: #B45309 !important;
+}
+
+[data-palette="amber-sunset"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\],
+[data-palette="amber-sunset"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\]\/80 {
+  background-color: #311302 !important;
+  border-bottom-color: #78350F !important;
+}
+
+[data-palette="amber-sunset"][data-theme="dark"]:not([data-template="glassmorphism"]) aside,
+[data-palette="amber-sunset"][data-theme="dark"]:not([data-template="glassmorphism"]) aside.bg-\[\#09104D\] {
+  background: #170E05 !important;
+  border-right-color: #38200B !important;
+}
+
+[data-palette="amber-sunset"][data-theme="dark"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\],
+[data-palette="amber-sunset"][data-theme="dark"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\]\/80 {
+  background-color: #0F0903 !important;
+  border-bottom-color: #261607 !important;
+}
+
+/* Glassmorphism Sidebar */
+[data-palette="amber-sunset"][data-template="glassmorphism"]:not([data-theme="dark"]) aside {
+  background-color: rgba(255, 251, 235, 0.75) !important;
+  border-right: 1px solid rgba(245, 158, 11, 0.25) !important;
+}
+
+[data-palette="amber-sunset"][data-theme="dark"][data-template="glassmorphism"] aside {
+  background-color: rgba(23, 14, 5, 0.78) !important;
+  border-right: 1px solid rgba(245, 158, 11, 0.16) !important;
+}
+
+/* Primary Surfaces & Buttons */
+[data-palette="amber-sunset"] .bg-\[\#09104D\],
+[data-palette="amber-sunset"] button.bg-\[\#09104D\],
+[data-palette="amber-sunset"] thead.bg-\[\#09104D\] {
+  background-color: #78350F !important;
+  border-color: #B45309 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="amber-sunset"] .hover\:bg-\[\#09104D\]:hover {
+  background-color: #B45309 !important;
+}
+
+[data-palette="amber-sunset"][data-theme="dark"] .bg-\[\#09104D\],
+[data-palette="amber-sunset"][data-theme="dark"] button.bg-\[\#09104D\],
+[data-palette="amber-sunset"][data-theme="dark"] thead.bg-\[\#09104D\] {
+  background-color: #381C08 !important;
+  border-color: #78350F !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="amber-sunset"] .bg-\[\#18217E\],
+[data-palette="amber-sunset"] button.bg-\[\#18217E\],
+[data-palette="amber-sunset"] a.bg-\[\#18217E\],
+[data-palette="amber-sunset"] aside a.bg-\[\#18217E\],
+[data-palette="amber-sunset"] aside .bg-\[\#18217E\] {
+  background-color: #D97706 !important;
+  border-color: #F59E0B !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="amber-sunset"] .hover\:bg-\[\#18217E\]:hover,
+[data-palette="amber-sunset"] .hover\:bg-\[\#121860\]:hover,
+[data-palette="amber-sunset"] aside .hover\:bg-\[\#18217E\]\/40:hover,
+[data-palette="amber-sunset"] aside .hover\:bg-\[\#18217E\]\/20:hover,
+[data-palette="amber-sunset"] aside a:hover:not(.bg-\[\#18217E\]) {
+  background-color: #B45309 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="amber-sunset"][data-theme="dark"] .bg-\[\#18217E\],
+[data-palette="amber-sunset"][data-theme="dark"] button.bg-\[\#18217E\],
+[data-palette="amber-sunset"][data-theme="dark"] a.bg-\[\#18217E\],
+[data-palette="amber-sunset"][data-theme="dark"] aside .bg-\[\#18217E\] {
+  background-color: #B45309 !important;
+  border-color: #D97706 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="amber-sunset"] .bg-\[\#18217E\]\/10,
+[data-palette="amber-sunset"] .bg-\[\#18217E\]\/20,
+[data-palette="amber-sunset"] .bg-\[\#18217E\]\/30,
+[data-palette="amber-sunset"] .bg-\[\#18217E\]\/40,
+[data-palette="amber-sunset"] aside .bg-\[\#18217E\]\/20,
+[data-palette="amber-sunset"] aside .bg-\[\#18217E\]\/30,
+[data-palette="amber-sunset"] aside .bg-\[\#18217E\]\/40,
+[data-palette="amber-sunset"] .bg-\[\#424989\],
+[data-palette="amber-sunset"] .bg-\[\#424989\]\/10,
+[data-palette="amber-sunset"] .bg-\[\#424989\]\/20 {
+  background-color: rgba(217, 119, 6, 0.12) !important;
+  color: #B45309 !important;
+}
+
+[data-palette="amber-sunset"][data-theme="dark"] .bg-\[\#18217E\]\/10,
+[data-palette="amber-sunset"][data-theme="dark"] .bg-\[\#18217E\]\/20,
+[data-palette="amber-sunset"][data-theme="dark"] .bg-\[\#424989\]\/10 {
+  background-color: rgba(251, 191, 36, 0.12) !important;
+  color: #FBBF24 !important;
+}
+
+/* Typography Overrides */
+[data-palette="amber-sunset"] .text-\[\#18217E\] {
+  color: #B45309 !important;
+}
+
+[data-palette="amber-sunset"] .text-\[\#424989\] {
+  color: #D97706 !important;
+}
+
+[data-palette="amber-sunset"]:not([data-theme="dark"]) h1.text-\[\#09104D\],
+[data-palette="amber-sunset"]:not([data-theme="dark"]) h2.text-\[\#09104D\],
+[data-palette="amber-sunset"]:not([data-theme="dark"]) h3.text-\[\#09104D\],
+[data-palette="amber-sunset"]:not([data-theme="dark"]) span.text-\[\#09104D\]:not(.text-white) {
+  color: #78350F !important;
+}
+
+[data-palette="amber-sunset"][data-theme="dark"] .text-\[\#18217E\] {
+  color: #FBBF24 !important;
+}
+
+[data-palette="amber-sunset"][data-theme="dark"] .text-\[\#424989\] {
+  color: #FCD34D !important;
+}
+
+[data-palette="amber-sunset"] .hover\:text-\[\#18217E\]:hover,
+[data-palette="amber-sunset"] .hover\:text-\[\#09104D\]:hover {
+  color: #D97706 !important;
+}
+
+/* Borders & Rings */
+[data-palette="amber-sunset"] .border-\[\#18217E\],
+[data-palette="amber-sunset"] .border-\[\#18217E\]\/30,
+[data-palette="amber-sunset"] .border-\[\#18217E\]\/40,
+[data-palette="amber-sunset"] .border-\[\#18217E\]\/60,
+[data-palette="amber-sunset"] .border-\[\#424989\],
+[data-palette="amber-sunset"] .border-\[\#424989\]\/30,
+[data-palette="amber-sunset"] .border-\[\#424989\]\/40,
+[data-palette="amber-sunset"] .border-\[\#424989\]\/50 {
+  border-color: #F59E0B !important;
+}
+
+[data-palette="amber-sunset"][data-theme="dark"] .border-\[\#18217E\],
+[data-palette="amber-sunset"][data-theme="dark"] .border-\[\#424989\] {
+  border-color: #78350F !important;
+}
+
+[data-palette="amber-sunset"] .ring-\[\#18217E\],
+[data-palette="amber-sunset"] .focus\:ring-\[\#18217E\]:focus,
+[data-palette="amber-sunset"] .focus\:border-\[\#18217E\]:focus {
+  --tw-ring-color: rgba(217, 119, 6, 0.4) !important;
+  border-color: #D97706 !important;
+}
+
+/* Apple Liquid Glass Auroras for Amber Sunset */
+[data-palette="amber-sunset"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 10%, rgba(251, 191, 36, 0.44) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(245, 158, 11, 0.34) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 85%, rgba(217, 119, 6, 0.26) 0%, transparent 55%),
+    linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%) !important;
+  background-attachment: fixed !important;
+}
+
+[data-palette="amber-sunset"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] {
+  background-color: rgba(217, 119, 6, 0.16) !important;
+  color: #D97706 !important;
+  box-shadow: inset 0 0 0 1px rgba(217, 119, 6, 0.35) !important;
+}
+
+[data-palette="amber-sunset"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] span,
+[data-palette="amber-sunset"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] svg {
+  color: #D97706 !important;
+}
+
+[data-palette="amber-sunset"][data-theme="dark"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 15%, rgba(245, 158, 11, 0.22) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(180, 83, 9, 0.26) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 90%, rgba(120, 53, 15, 0.35) 0%, transparent 55%),
+    linear-gradient(135deg, #0E0A05 0%, #17110A 100%) !important;
+  background-attachment: fixed !important;
+}
+
+/* ------------------------------------------------------------
+   5. ROYAL AMETHYST / CYBER VIOLET ([data-palette="royal-amethyst"])
+   ------------------------------------------------------------ */
+/* Sidebar styling in corporate mode */
+[data-palette="royal-amethyst"]:not([data-template="glassmorphism"]) aside,
+[data-palette="royal-amethyst"]:not([data-template="glassmorphism"]) aside.bg-\[\#09104D\] {
+  background: linear-gradient(180deg, #2E1065 0%, #4C1D95 100%) !important;
+  border-right-color: #6D28D9 !important;
+}
+
+[data-palette="royal-amethyst"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\],
+[data-palette="royal-amethyst"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\]\/80 {
+  background-color: #1E0A45 !important;
+  border-bottom-color: #4C1D95 !important;
+}
+
+[data-palette="royal-amethyst"][data-theme="dark"]:not([data-template="glassmorphism"]) aside,
+[data-palette="royal-amethyst"][data-theme="dark"]:not([data-template="glassmorphism"]) aside.bg-\[\#09104D\] {
+  background: #130920 !important;
+  border-right-color: #2E164C !important;
+}
+
+[data-palette="royal-amethyst"][data-theme="dark"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\],
+[data-palette="royal-amethyst"][data-theme="dark"]:not([data-template="glassmorphism"]) aside .bg-\[\#070724\]\/80 {
+  background-color: #0D0516 !important;
+  border-bottom-color: #210F36 !important;
+}
+
+/* Glassmorphism Sidebar */
+[data-palette="royal-amethyst"][data-template="glassmorphism"]:not([data-theme="dark"]) aside {
+  background-color: rgba(250, 245, 255, 0.75) !important;
+  border-right: 1px solid rgba(139, 92, 246, 0.25) !important;
+}
+
+[data-palette="royal-amethyst"][data-theme="dark"][data-template="glassmorphism"] aside {
+  background-color: rgba(19, 9, 32, 0.78) !important;
+  border-right: 1px solid rgba(139, 92, 246, 0.16) !important;
+}
+
+/* Primary Surfaces & Buttons */
+[data-palette="royal-amethyst"] .bg-\[\#09104D\],
+[data-palette="royal-amethyst"] button.bg-\[\#09104D\],
+[data-palette="royal-amethyst"] thead.bg-\[\#09104D\] {
+  background-color: #4C1D95 !important;
+  border-color: #6D28D9 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="royal-amethyst"] .hover\:bg-\[\#09104D\]:hover {
+  background-color: #6D28D9 !important;
+}
+
+[data-palette="royal-amethyst"][data-theme="dark"] .bg-\[\#09104D\],
+[data-palette="royal-amethyst"][data-theme="dark"] button.bg-\[\#09104D\],
+[data-palette="royal-amethyst"][data-theme="dark"] thead.bg-\[\#09104D\] {
+  background-color: #270F4D !important;
+  border-color: #4C1D95 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="royal-amethyst"] .bg-\[\#18217E\],
+[data-palette="royal-amethyst"] button.bg-\[\#18217E\],
+[data-palette="royal-amethyst"] a.bg-\[\#18217E\],
+[data-palette="royal-amethyst"] aside a.bg-\[\#18217E\],
+[data-palette="royal-amethyst"] aside .bg-\[\#18217E\] {
+  background-color: #7C3AED !important;
+  border-color: #8B5CF6 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="royal-amethyst"] .hover\:bg-\[\#18217E\]:hover,
+[data-palette="royal-amethyst"] .hover\:bg-\[\#121860\]:hover,
+[data-palette="royal-amethyst"] aside .hover\:bg-\[\#18217E\]\/40:hover,
+[data-palette="royal-amethyst"] aside .hover\:bg-\[\#18217E\]\/20:hover,
+[data-palette="royal-amethyst"] aside a:hover:not(.bg-\[\#18217E\]) {
+  background-color: #6D28D9 !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="royal-amethyst"][data-theme="dark"] .bg-\[\#18217E\],
+[data-palette="royal-amethyst"][data-theme="dark"] button.bg-\[\#18217E\],
+[data-palette="royal-amethyst"][data-theme="dark"] a.bg-\[\#18217E\],
+[data-palette="royal-amethyst"][data-theme="dark"] aside .bg-\[\#18217E\] {
+  background-color: #6D28D9 !important;
+  border-color: #7C3AED !important;
+  color: #FFFFFF !important;
+}
+
+[data-palette="royal-amethyst"] .bg-\[\#18217E\]\/10,
+[data-palette="royal-amethyst"] .bg-\[\#18217E\]\/20,
+[data-palette="royal-amethyst"] .bg-\[\#18217E\]\/30,
+[data-palette="royal-amethyst"] .bg-\[\#18217E\]\/40,
+[data-palette="royal-amethyst"] aside .bg-\[\#18217E\]\/20,
+[data-palette="royal-amethyst"] aside .bg-\[\#18217E\]\/30,
+[data-palette="royal-amethyst"] aside .bg-\[\#18217E\]\/40,
+[data-palette="royal-amethyst"] .bg-\[\#424989\],
+[data-palette="royal-amethyst"] .bg-\[\#424989\]\/10,
+[data-palette="royal-amethyst"] .bg-\[\#424989\]\/20 {
+  background-color: rgba(124, 58, 237, 0.12) !important;
+  color: #6D28D9 !important;
+}
+
+[data-palette="royal-amethyst"][data-theme="dark"] .bg-\[\#18217E\]\/10,
+[data-palette="royal-amethyst"][data-theme="dark"] .bg-\[\#18217E\]\/20,
+[data-palette="royal-amethyst"][data-theme="dark"] .bg-\[\#424989\]\/10 {
+  background-color: rgba(167, 139, 250, 0.12) !important;
+  color: #A78BFA !important;
+}
+
+/* Typography Overrides */
+[data-palette="royal-amethyst"] .text-\[\#18217E\] {
+  color: #7C3AED !important;
+}
+
+[data-palette="royal-amethyst"] .text-\[\#424989\] {
+  color: #6D28D9 !important;
+}
+
+[data-palette="royal-amethyst"]:not([data-theme="dark"]) h1.text-\[\#09104D\],
+[data-palette="royal-amethyst"]:not([data-theme="dark"]) h2.text-\[\#09104D\],
+[data-palette="royal-amethyst"]:not([data-theme="dark"]) h3.text-\[\#09104D\],
+[data-palette="royal-amethyst"]:not([data-theme="dark"]) span.text-\[\#09104D\]:not(.text-white) {
+  color: #4C1D95 !important;
+}
+
+[data-palette="royal-amethyst"][data-theme="dark"] .text-\[\#18217E\] {
+  color: #A78BFA !important;
+}
+
+[data-palette="royal-amethyst"][data-theme="dark"] .text-\[\#424989\] {
+  color: #C4B5FD !important;
+}
+
+[data-palette="royal-amethyst"] .hover\:text-\[\#18217E\]:hover,
+[data-palette="royal-amethyst"] .hover\:text-\[\#09104D\]:hover {
+  color: #8B5CF6 !important;
+}
+
+/* Borders & Rings */
+[data-palette="royal-amethyst"] .border-\[\#18217E\],
+[data-palette="royal-amethyst"] .border-\[\#18217E\]\/30,
+[data-palette="royal-amethyst"] .border-\[\#18217E\]\/40,
+[data-palette="royal-amethyst"] .border-\[\#18217E\]\/60,
+[data-palette="royal-amethyst"] .border-\[\#424989\],
+[data-palette="royal-amethyst"] .border-\[\#424989\]\/30,
+[data-palette="royal-amethyst"] .border-\[\#424989\]\/40,
+[data-palette="royal-amethyst"] .border-\[\#424989\]\/50 {
+  border-color: #8B5CF6 !important;
+}
+
+[data-palette="royal-amethyst"][data-theme="dark"] .border-\[\#18217E\],
+[data-palette="royal-amethyst"][data-theme="dark"] .border-\[\#424989\] {
+  border-color: #5B21B6 !important;
+}
+
+[data-palette="royal-amethyst"] .ring-\[\#18217E\],
+[data-palette="royal-amethyst"] .focus\:ring-\[\#18217E\]:focus,
+[data-palette="royal-amethyst"] .focus\:border-\[\#18217E\]:focus {
+  --tw-ring-color: rgba(124, 58, 237, 0.4) !important;
+  border-color: #7C3AED !important;
+}
+
+/* Apple Liquid Glass Auroras for Royal Amethyst */
+[data-palette="royal-amethyst"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 10%, rgba(167, 139, 250, 0.44) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(139, 92, 246, 0.35) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 85%, rgba(124, 58, 237, 0.30) 0%, transparent 55%),
+    linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%) !important;
+  background-attachment: fixed !important;
+}
+
+[data-palette="royal-amethyst"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] {
+  background-color: rgba(124, 58, 237, 0.16) !important;
+  color: #7C3AED !important;
+  box-shadow: inset 0 0 0 1px rgba(124, 58, 237, 0.35) !important;
+}
+
+[data-palette="royal-amethyst"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] span,
+[data-palette="royal-amethyst"][data-template="glassmorphism"]:not([data-theme="dark"]) aside a.bg-\[\#18217E\] svg {
+  color: #7C3AED !important;
+}
+
+[data-palette="royal-amethyst"][data-theme="dark"][data-template="glassmorphism"] body {
+  background: 
+    radial-gradient(ellipse 80% 50% at 15% 15%, rgba(139, 92, 246, 0.22) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 85% 15%, rgba(109, 40, 217, 0.26) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 60% at 50% 90%, rgba(76, 29, 149, 0.38) 0%, transparent 55%),
+    linear-gradient(135deg, #0B0612 0%, #130B1E 100%) !important;
+  background-attachment: fixed !important;
+}
