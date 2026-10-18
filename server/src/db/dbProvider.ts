@@ -216,10 +216,13 @@ export class DbProvider {
 
   // --- EXCEPTIONS ---
   async getExceptions(): Promise<ExceptionRecord[]> {
+    if (this.exceptions.length > 0) {
+      return [...this.exceptions];
+    }
     if (pool) {
       try {
         const res = await query('SELECT * FROM exceptions ORDER BY detected_at DESC');
-        return res.rows;
+        if (res.rows.length > 0) return res.rows;
       } catch (err: any) {
         logger.warn('Error querying exceptions from Neon, falling back to memory', { error: err.message });
       }

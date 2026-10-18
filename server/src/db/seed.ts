@@ -47,6 +47,46 @@ export async function runSeed() {
       );
     }
 
+    // 4. Shipments
+    const carriersList = (await query('SELECT id, code FROM carriers')).rows;
+    const hubsList = (await query('SELECT id, hub_code FROM hub_capacities')).rows;
+    const vehiclesList = (await query('SELECT id, vehicle_code FROM vehicles')).rows;
+
+    const carrierMap = new Map(carriersList.map(c => [c.code, c.id]));
+    const hubMap = new Map(hubsList.map(h => [h.hub_code, h.id]));
+    const vehicleMap = new Map(vehiclesList.map(v => [v.vehicle_code, v.id]));
+
+    for (const s of initialShipments) {
+      const carrierId = carrierMap.get('APEX') || carriersList[0]?.id;
+      const originId = hubMap.get('HUB-HYD') || hubsList[0]?.id;
+      const destId = hubMap.get('HUB-VJA') || hubsList[1]?.id;
+      const vehicleId = s.vehicle_code ? vehicleMap.get(s.vehicle_code) : null;
+
+      if (carrierId && originId && destId) {
+        await query(
+          `INSERT INTO shipments (
+            tracking_id, carrier_id, origin_hub_id, destination_hub_id, vehicle_id,
+            status, estimated_arrival, original_eta, cargo_type, weight_kg, delay_minutes, route_coordinates
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+          ON CONFLICT (tracking_id) DO NOTHING;`,
+          [
+            s.tracking_id,
+            carrierId,
+            originId,
+            destId,
+            vehicleId || null,
+            s.status,
+            s.estimated_arrival,
+            s.original_eta,
+            s.cargo_type,
+            s.weight_kg,
+            s.delay_minutes,
+            JSON.stringify(s.route_coordinates || []),
+          ]
+        );
+      }
+    }
+
     logger.info('PostgreSQL database seeded successfully!');
   } catch (err: any) {
     logger.error('Database seeding failed', { error: err.message });
