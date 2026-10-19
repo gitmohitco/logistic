@@ -13,7 +13,10 @@ import {
   Mail,
   Plane,
   Ship,
-  Award
+  Award,
+  ArrowUpDown,
+  Clock,
+  Shield
 } from 'lucide-react';
 import { ManagedUser, UserRole, CarrierOrganization, TransportMode } from '../../types';
 import { mendixClient } from '../../services/api/mendixClient';
@@ -243,7 +246,7 @@ export const UserManagementPage: React.FC = () => {
       )}
 
       {/* Tabs & Search Toolbar */}
-      <div className="bg-white p-4 rounded-xl border border-[#D0D9DE] shadow-card flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      <div className="bg-white p-4 rounded-2xl border border-[#D0D9DE] shadow-card flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         {/* Tab Switcher */}
         <div className="flex items-center gap-2 border-b sm:border-b-0 pb-2 sm:pb-0">
           <button
@@ -255,7 +258,14 @@ export const UserManagementPage: React.FC = () => {
             }`}
           >
             <UserPlus className="w-3.5 h-3.5" />
-            <span>User Accounts ({users.length})</span>
+            <span>User Accounts</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                activeTab === 'users' ? 'bg-white/20 text-white' : 'bg-[#D0D9DE]/80 text-[#393A50]'
+              }`}
+            >
+              {users.length}
+            </span>
           </button>
 
           <button
@@ -267,7 +277,14 @@ export const UserManagementPage: React.FC = () => {
             }`}
           >
             <Truck className="w-3.5 h-3.5" />
-            <span>Carrier Organizations ({carriers.length})</span>
+            <span>Carrier Organizations</span>
+            <span
+              className={`text-[10px] px-1.5 py-0.2 rounded-full font-bold ${
+                activeTab === 'carriers' ? 'bg-white/20 text-white' : 'bg-[#D0D9DE]/80 text-[#393A50]'
+              }`}
+            >
+              {carriers.length}
+            </span>
           </button>
         </div>
 
@@ -283,85 +300,129 @@ export const UserManagementPage: React.FC = () => {
                 ? 'Search users by name, email, role...'
                 : 'Search carriers by code, name, hub...'
             }
-            className="w-full pl-9 pr-4 py-1.5 text-xs bg-[#F4F7F9] border border-[#D0D9DE] rounded-lg text-[#070724] placeholder-[#8A9995] focus:outline-none focus:border-[#18217E] focus:bg-white"
+            className="w-full pl-9 pr-4 py-2 text-xs bg-[#F4F7F9] border border-[#D0D9DE] rounded-xl text-[#070724] placeholder-[#8A9995] focus:outline-none focus:border-[#18217E] focus:bg-white transition-all"
           />
         </div>
       </div>
 
       {/* TAB 1: USERS DIRECTORY */}
       {activeTab === 'users' && (
-        <div className="bg-white rounded-xl border border-[#D0D9DE] shadow-card overflow-hidden">
+        <div className="bg-white rounded-2xl border border-[#D0D9DE] shadow-card overflow-hidden">
           {isLoading ? (
             <div className="p-6 space-y-3">
               {Array.from({ length: 4 }).map((_, i) => (
-                <Skeleton key={i} className="h-12 w-full rounded-lg" />
+                <Skeleton key={i} className="h-14 w-full rounded-xl" />
               ))}
+            </div>
+          ) : filteredUsers.length === 0 ? (
+            <div className="p-12 text-center">
+              <p className="text-xs font-bold text-[#09104D]">No matching users found</p>
+              <p className="text-[11px] text-[#8A9995] mt-1">Try adjusting your search criteria</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#09104D] text-white font-bold uppercase tracking-wider text-[10px]">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead className="bg-[#F4F7F9] border-b border-[#D0D9DE] text-[#09104D] font-bold uppercase tracking-wider text-[11px] select-none">
                   <tr>
-                    <th className="py-3 px-4">User</th>
-                    <th className="py-3 px-4">Assigned Role</th>
-                    <th className="py-3 px-4">Organization / Hub Scope</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4">Last Activity</th>
-                    <th className="py-3 px-4 text-right">Actions</th>
+                    <th className="py-3.5 px-4 cursor-pointer hover:bg-[#E5EBEE] transition-colors">
+                      <div className="flex items-center gap-1.5">
+                        <span>User</span>
+                        <ArrowUpDown className="w-3 h-3 text-[#424989]" />
+                      </div>
+                    </th>
+                    <th className="py-3.5 px-4">Assigned Role</th>
+                    <th className="py-3.5 px-4">Organization / Hub Scope</th>
+                    <th className="py-3.5 px-4">Status</th>
+                    <th className="py-3.5 px-4 cursor-pointer hover:bg-[#E5EBEE] transition-colors">
+                      <div className="flex items-center gap-1.5">
+                        <span>Last Activity</span>
+                        <ArrowUpDown className="w-3 h-3 text-[#424989]" />
+                      </div>
+                    </th>
+                    <th className="py-3.5 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#D0D9DE]">
+                <tbody className="divide-y divide-[#E5EBEE]">
                   {filteredUsers.map((u) => {
                     const roleCfg = ROLE_CONFIGS[u.role];
+                    const initials = u.name
+                      .split(' ')
+                      .map((n) => n[0])
+                      .join('')
+                      .toUpperCase()
+                      .slice(0, 2);
+
                     return (
-                      <tr key={u.id} className="hover:bg-[#F4F7F9] transition-colors">
-                        <td className="py-3 px-4">
-                          <div className="font-bold text-[#09104D]">{u.name}</div>
-                          <div className="font-mono text-[11px] text-[#8A9995]">{u.email}</div>
+                      <tr key={u.id} className="hover:bg-[#F8FAFC] transition-colors group">
+                        {/* 1. User with initial avatar & email */}
+                        <td className="py-3.5 px-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 rounded-full bg-[#18217E]/10 text-[#18217E] flex items-center justify-center font-bold text-xs flex-shrink-0">
+                              {initials}
+                            </div>
+                            <div>
+                              <div className="font-bold text-[#09104D] group-hover:text-[#18217E] transition-colors">
+                                {u.name}
+                              </div>
+                              <div className="font-mono text-[11px] text-[#8A9995]">
+                                {u.email}
+                              </div>
+                            </div>
+                          </div>
                         </td>
 
-                        <td className="py-3 px-4">
-                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#18217E]/10 text-[#18217E]">
-                            {roleCfg?.label || u.role}
+                        {/* 2. Assigned Role Badge */}
+                        <td className="py-3.5 px-4 whitespace-nowrap">
+                          <span className="px-2.5 py-1 rounded-full text-[10.5px] font-bold bg-[#18217E]/10 text-[#18217E] border border-[#18217E]/20 inline-flex items-center gap-1">
+                            <Shield className="w-3 h-3 text-[#18217E]" />
+                            <span>{roleCfg?.label || u.role}</span>
                           </span>
                         </td>
 
-                        <td className="py-3 px-4 text-[#393A50]">
+                        {/* 3. Scope */}
+                        <td className="py-3.5 px-4 text-[#393A50]">
                           {u.carrierName ? (
-                            <div className="flex items-center gap-1 font-medium text-[#18217E]">
-                              <Building className="w-3.5 h-3.5" />
+                            <div className="flex items-center gap-1.5 font-medium text-[#18217E]">
+                              <Building className="w-3.5 h-3.5 text-[#18217E]" />
                               <span>Carrier: {u.carrierName}</span>
                             </div>
                           ) : u.customerName ? (
-                            <div className="flex items-center gap-1 font-medium text-[#107C41]">
-                              <Building className="w-3.5 h-3.5" />
+                            <div className="flex items-center gap-1.5 font-medium text-[#107C41]">
+                              <Building className="w-3.5 h-3.5 text-[#107C41]" />
                               <span>Account: {u.customerName}</span>
                             </div>
                           ) : u.warehouseName ? (
-                            <div className="flex items-center gap-1 font-medium text-[#424989]">
-                              <Building className="w-3.5 h-3.5" />
+                            <div className="flex items-center gap-1.5 font-medium text-[#424989]">
+                              <Building className="w-3.5 h-3.5 text-[#424989]" />
                               <span>Hub: {u.warehouseName}</span>
                             </div>
                           ) : (
-                            <span className="text-[#8A9995] italic">Enterprise Global</span>
+                            <span className="text-[#8A9995] italic font-medium">Enterprise Global</span>
                           )}
                         </td>
 
-                        <td className="py-3 px-4">
-                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#107C41]/10 text-[#107C41] flex items-center gap-1 w-max">
-                            <CheckCircle2 className="w-3 h-3" />
-                            {u.status}
+                        {/* 4. Status */}
+                        <td className="py-3.5 px-4 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-[#107C41]/10 text-[#107C41] border border-[#107C41]/20">
+                            <span className="w-1.5 h-1.5 rounded-full bg-[#107C41]" />
+                            <span>{u.status}</span>
                           </span>
                         </td>
 
-                        <td className="py-3 px-4 text-[#8A9995] font-mono text-[11px]">
-                          {u.lastActive}
+                        {/* 5. Last Activity */}
+                        <td className="py-3.5 px-4 whitespace-nowrap">
+                          <span className="text-[#64748B] font-mono text-[11px] flex items-center gap-1.5">
+                            <Clock className="w-3 h-3 text-[#94A3B8]" />
+                            <span>{u.lastActive}</span>
+                          </span>
                         </td>
 
-                        <td className="py-3 px-4 text-right">
+                        {/* 6. Action */}
+                        <td className="py-3.5 px-4 text-right whitespace-nowrap">
                           <button
+                            type="button"
                             onClick={() => setActiveUserModal(u)}
-                            className="p-1.5 rounded-lg text-[#18217E] hover:bg-[#18217E]/10 transition-colors inline-flex items-center gap-1 font-semibold text-xs cursor-pointer"
+                            className="px-3 py-1.5 rounded-lg text-xs font-semibold text-[#18217E] bg-[#18217E]/5 group-hover:bg-[#18217E] group-hover:text-white transition-all inline-flex items-center gap-1.5 cursor-pointer border border-[#18217E]/10 group-hover:border-[#18217E]"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                             <span>Edit</span>
@@ -374,12 +435,25 @@ export const UserManagementPage: React.FC = () => {
               </table>
             </div>
           )}
+
+          {/* Table Footer */}
+          {!isLoading && filteredUsers.length > 0 && (
+            <div className="px-5 py-3 border-t border-[#D0D9DE] bg-[#F4F7F9] flex flex-col sm:flex-row items-center justify-between text-xs text-[#393A50] gap-2">
+              <span>
+                Displaying <strong>{filteredUsers.length}</strong> of <strong>{users.length}</strong> authorized users
+              </span>
+              <div className="flex items-center gap-1.5 text-[11px] text-[#8A9995]">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Identity provider directory active</span>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       {/* TAB 2: CARRIER ORGANIZATIONS DIRECTORY */}
       {activeTab === 'carriers' && (
-        <div className="bg-white rounded-xl border border-[#D0D9DE] shadow-card overflow-hidden">
+        <div className="bg-white rounded-2xl border border-[#D0D9DE] shadow-card overflow-hidden">
           <div className="p-4 bg-[#F4F7F9] border-b border-[#D0D9DE] flex items-center justify-between">
             <div>
               <h3 className="text-xs font-bold text-[#09104D] uppercase tracking-wider">
@@ -415,41 +489,61 @@ export const UserManagementPage: React.FC = () => {
           {isLoading ? (
             <div className="p-6 space-y-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <Skeleton key={i} className="h-14 w-full rounded-lg" />
+                <Skeleton key={i} className="h-14 w-full rounded-xl" />
               ))}
+            </div>
+          ) : filteredCarriers.length === 0 ? (
+            <div className="p-12 text-center">
+              <p className="text-xs font-bold text-[#09104D]">No matching carrier organizations</p>
+              <p className="text-[11px] text-[#8A9995] mt-1">Try adjusting your search criteria</p>
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-[#09104D] text-white font-bold uppercase tracking-wider text-[10px]">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead className="bg-[#F4F7F9] border-b border-[#D0D9DE] text-[#09104D] font-bold uppercase tracking-wider text-[11px] select-none">
                   <tr>
-                    <th className="py-3 px-4">Carrier Code</th>
-                    <th className="py-3 px-4">Organization Name</th>
-                    <th className="py-3 px-4">Operating Modes</th>
-                    <th className="py-3 px-4">SLA Tier</th>
-                    <th className="py-3 px-4">Primary Hub</th>
-                    <th className="py-3 px-4">Contact</th>
-                    <th className="py-3 px-4">Status</th>
-                    <th className="py-3 px-4 text-right">Actions</th>
+                    <th className="py-3.5 px-4 cursor-pointer hover:bg-[#E5EBEE] transition-colors">
+                      <div className="flex items-center gap-1.5">
+                        <span>Carrier Code</span>
+                        <ArrowUpDown className="w-3 h-3 text-[#424989]" />
+                      </div>
+                    </th>
+                    <th className="py-3.5 px-4 cursor-pointer hover:bg-[#E5EBEE] transition-colors">
+                      <div className="flex items-center gap-1.5">
+                        <span>Organization Name</span>
+                        <ArrowUpDown className="w-3 h-3 text-[#424989]" />
+                      </div>
+                    </th>
+                    <th className="py-3.5 px-4">Operating Modes</th>
+                    <th className="py-3.5 px-4">SLA Tier</th>
+                    <th className="py-3.5 px-4">Primary Hub</th>
+                    <th className="py-3.5 px-4">Contact</th>
+                    <th className="py-3.5 px-4">Status</th>
+                    <th className="py-3.5 px-4 text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#D0D9DE]">
+                <tbody className="divide-y divide-[#E5EBEE]">
                   {filteredCarriers.map((c) => (
-                    <tr key={c.id} className="hover:bg-[#F4F7F9] transition-colors">
-                      <td className="py-3 px-4 font-mono font-bold text-[#18217E]">
-                        {c.carrierCode}
+                    <tr key={c.id} className="hover:bg-[#F8FAFC] transition-colors group">
+                      <td className="py-3.5 px-4 font-mono font-bold text-[#18217E] whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <Truck className="w-4 h-4 text-[#424989] flex-shrink-0" />
+                          <span>{c.carrierCode}</span>
+                        </div>
                       </td>
 
-                      <td className="py-3 px-4 font-bold text-[#09104D]">
-                        {c.name}
+                      <td className="py-3.5 px-4">
+                        <div className="font-bold text-[#09104D] group-hover:text-[#18217E] transition-colors">
+                          {c.name}
+                        </div>
                         {c.fleetCount && (
-                          <span className="block text-[10px] text-[#8A9995] font-normal">
+                          <span className="block text-[10px] text-[#8A9995] font-normal mt-0.5">
                             Fleet Capacity: {c.fleetCount} Units
                           </span>
                         )}
                       </td>
 
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-4 whitespace-nowrap">
                         <div className="flex items-center gap-1.5">
                           {c.transportModes.map((m) => (
                             <span
@@ -463,31 +557,31 @@ export const UserManagementPage: React.FC = () => {
                         </div>
                       </td>
 
-                      <td className="py-3 px-4">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-[#18217E]/10 text-[#18217E] flex items-center gap-1 w-max">
+                      <td className="py-3.5 px-4 whitespace-nowrap">
+                        <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase bg-[#18217E]/10 text-[#18217E] border border-[#18217E]/20 inline-flex items-center gap-1">
                           <Award className="w-3 h-3 text-[#18217E]" />
-                          {c.slaTier.replace(/_/g, ' ')}
+                          <span>{c.slaTier.replace(/_/g, ' ')}</span>
                         </span>
                       </td>
 
-                      <td className="py-3 px-4 text-[#393A50]">
+                      <td className="py-3.5 px-4 text-[#393A50] whitespace-nowrap">
                         {c.primaryHub || 'Multi-Regional'}
                       </td>
 
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-4 whitespace-nowrap">
                         <div className="flex items-center gap-1 text-[11px] text-[#070724]">
                           <Mail className="w-3 h-3 text-[#8A9995]" />
                           <span>{c.contactEmail}</span>
                         </div>
                         {c.contactPhone && (
-                          <div className="flex items-center gap-1 text-[10px] text-[#8A9995]">
+                          <div className="flex items-center gap-1 text-[10px] text-[#8A9995] mt-0.5">
                             <Phone className="w-3 h-3 text-[#8A9995]" />
                             <span>{c.contactPhone}</span>
                           </div>
                         )}
                       </td>
 
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 px-4 whitespace-nowrap">
                         <Badge
                           variant={
                             c.status === 'ACTIVE'
@@ -501,10 +595,11 @@ export const UserManagementPage: React.FC = () => {
                         </Badge>
                       </td>
 
-                      <td className="py-3 px-4 text-right">
+                      <td className="py-3.5 px-4 text-right whitespace-nowrap">
                         <button
+                          type="button"
                           onClick={() => setActiveCarrierModal(c)}
-                          className="p-1.5 rounded-lg text-[#18217E] hover:bg-[#18217E]/10 transition-colors inline-flex items-center gap-1 font-semibold text-xs cursor-pointer"
+                          className="px-3 py-1.5 rounded-lg text-xs font-semibold text-[#18217E] bg-[#18217E]/5 group-hover:bg-[#18217E] group-hover:text-white transition-all inline-flex items-center gap-1.5 cursor-pointer border border-[#18217E]/10 group-hover:border-[#18217E]"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                           <span>Edit</span>
@@ -514,6 +609,19 @@ export const UserManagementPage: React.FC = () => {
                   ))}
                 </tbody>
               </table>
+            </div>
+          )}
+
+          {/* Table Footer */}
+          {!isLoading && filteredCarriers.length > 0 && (
+            <div className="px-5 py-3 border-t border-[#D0D9DE] bg-[#F4F7F9] flex flex-col sm:flex-row items-center justify-between text-xs text-[#393A50] gap-2">
+              <span>
+                Displaying <strong>{filteredCarriers.length}</strong> of <strong>{carriers.length}</strong> partner carrier organizations
+              </span>
+              <div className="flex items-center gap-1.5 text-[11px] text-[#8A9995]">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Carrier telematics sync operational</span>
+              </div>
             </div>
           )}
         </div>

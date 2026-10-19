@@ -116,12 +116,23 @@ export const DashboardView: React.FC = () => {
         totalShipments: {
           ...summary.kpi.totalShipments,
           value: telematicsStats ? telematicsStats.totalCount : 520,
+          prevMonth: 480,
+          percentChange: 8.3,
+          trend: [475, 490, 505, telematicsStats ? telematicsStats.totalCount : 520],
+          isPositiveGood: true,
         },
         activeDeliveries: {
           value: telematicsStats ? telematicsStats.activeMoving : 468,
           prevMonth: 420,
           percentChange: 11.4,
           trend: [400, 420, 450, 468],
+          isPositiveGood: true,
+        },
+        deliveredShipments: {
+          value: summary.kpi.deliveredShipments?.value || 18,
+          prevMonth: 16,
+          percentChange: 12.5,
+          trend: [12, 14, 16, 18],
           isPositiveGood: true,
         },
         delayedShipments: {
@@ -137,6 +148,13 @@ export const DashboardView: React.FC = () => {
           percentChange: -15.0,
           trend: [45, 40, 37, 34],
           isPositiveGood: false,
+        },
+        onTimeDelivery: {
+          value: 93.5,
+          prevMonth: 91.0,
+          percentChange: 2.7,
+          trend: [89, 90, 92, 93.5],
+          isPositiveGood: true,
         },
       },
     };
